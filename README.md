@@ -52,24 +52,19 @@ These provide random sampling, plotting, and probability density evaluations.
 
 This section implements Metropolis–Hastings to sample from a multivariate normal target distribution.
 
-Key functions
+Key functions:
 
-target_distribution(x, mean, cov, dim, k=0)
-Evaluates the density of a multivariate normal distribution at x.
+- target_distribution(x, mean, cov, dim, k=0):
+  Evaluates the density of a multivariate normal distribution at x.
+  For dim == 1, it uses the k-th coordinate of mean and cov.
+  For higher dimensions, it uses mean and cov directly via scipy.stats.multivariate_normal.pdf.
 
-For dim == 1, it uses the k-th coordinate of mean and cov.
+- proposal_distribution(x, step_size, dim):
+  Gaussian proposal distribution centered at the current state:
+  np.random.multivariate_normal(x, np.diag([step_size] * dim))
+  acceptance_probability(current_x, proposed_x, dim)
 
-For higher dimensions, it uses mean and cov directly via
-scipy.stats.multivariate_normal.pdf.
-
-proposal_distribution(x, step_size, dim)
-Gaussian proposal distribution centered at the current state:
-
-np.random.multivariate_normal(x, np.diag([step_size] * dim))
-
-
-acceptance_probability(current_x, proposed_x, dim)
-Computes the standard MH acceptance ratio:
+#### Computes the standard MH acceptance ratio:
 
 $$
 \alpha(x, x') = \min\left(1, \frac{\pi(x')}{\pi(x)}\right)
@@ -77,15 +72,16 @@ $$
 
 where $\pi$ is the target density.
 
-metropolis_hastings(n_iterations, initial_x, step_size, dim)
-Runs the MH chain for n_iterations steps starting from initial_x.
+- metropolis_hastings(n_iterations, initial_x, step_size, dim)
+  Runs the MH chain for n_iterations steps starting from initial_x.
+
 Returns:
 
-samples – list of full dim-dimensional samples
-samples_x0 – first coordinate of each sample
-samples_x1 – second coordinate of each sample
+  samples – list of full dim-dimensional samples
+  samples_x0 – first coordinate of each sample
+  samples_x1 – second coordinate of each sample
 
-Typical usage
+Typical usage:
 ```python
 n_iterations = 10000
 dim = 2
@@ -136,7 +132,7 @@ step_size = 0.01
 samples = langevin_mcmc(num_samples, step_size)
 ```
 
-Plot the histogram of the second half of the chain vs. the true Gaussian density.
+Plots the histogram of the second half of the chain vs. the true Gaussian density.
 This illustrates how the ULA samples approximate the target.
 
 ### 2.4. High-Dimensional Langevin MCMC for Multivariate Gaussians
