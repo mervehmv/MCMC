@@ -101,7 +101,7 @@ samples, samples_x0, samples_x1 = metropolis_hastings(
 
 You can then visualize the marginal distributions of x[0] and x[1] using histograms and compare them to the true Gaussian density.
 
-2.3. Langevin MCMC in 1D (Unadjusted Langevin Algorithm)
+### 2.3. Langevin MCMC in 1D (Unadjusted Langevin Algorithm)
 
 This part implements Langevin MCMC / ULA for a simple 1D target distribution.
 
